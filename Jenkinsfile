@@ -1,15 +1,20 @@
 pipeline {
     agent any
-tools {
-    maven 'local maven'
+    
+    tools {
+        maven 'local_maven'
+    }
+
 stages{
         stage('Build'){
             steps {
-                sh "mvn build"
+                sh 'mvn clean package'
             }
         }
-            
-}
-        
-    }
-}
+                stage ("Deploy to Staging"){
+                    steps {
+                        sh "scp -v -o StrictHostKeyChecking=no **/*.war root@${params.staging_server}:/opt/tomcat/webapps/"
+                    }
+                }
+            }
+        }
