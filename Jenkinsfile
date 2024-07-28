@@ -5,14 +5,10 @@ tools {
 stages{
         stage('Build'){
             steps {
-                sh "mvn clean build"
+                sh "mvn build"
             }
         }
-             stage('deploy'){
-            steps {
-                echo "mvn clean package"
-            }
-         }
+            
 }
         
     }
