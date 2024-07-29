@@ -5,16 +5,29 @@ pipeline {
         maven 'local maven'
     }
 
-stages{
-        stage('Build'){
-            steps {
-                sh 'mvn clean package'
-            }
+    stages {
+        stage ('build application'){
+        step {
+            echo "mvn clean package"
         }
-                stage ("Deploy to Staging"){
-                    steps {
-                        sh "scp **/*.war root@13.233.138.96:/opt/tomcat/webapps/"
-                    }
-                }
+            post {
+             success {
+                 echo "archiving artifact"
+                 archiveArtifacts artifacts: '**/target/*.war'
+             }
             }
+       }
+         stage ("deploy server"){
+             parallel {
+                  stage ('deploy 1'){
+        step {
+            deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.110.29.156:8080')], contextPath: null, war: '**/*.war'
         }
+             }
+                  stage ('deploy 2'){
+        step {
+            echo "Deploying tomcat server"
+        }
+         }
+    }
+}
