@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage ('build application'){
         step {
-            echo "mvn clean package"
+            echo 'mvn clean package'
         }
             post {
              success {
@@ -28,6 +28,8 @@ pipeline {
         step {
             echo "Deploying tomcat server"
         }
+         }
+    }
          }
     }
 }
