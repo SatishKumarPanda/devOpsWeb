@@ -4,32 +4,32 @@ pipeline {
     tools {
         maven 'local maven'
     }
+    triggers {
+         pollSCM('* * * * *')
+     }
 
-    stages {
-        stage ('build application'){
-        step {
-            echo 'mvn clean package'
-        }
-            post {
-             success {
-                 echo "archiving artifact"
-                 archiveArtifacts artifacts: '**/target/*.war'
-             }
+stages{
+        stage('Build'){
+            steps {
+                sh 'mvn clean package'
             }
-       }
-         stage ("deploy server"){
-             parallel {
-                  stage ('deploy 1'){
-        step {
-            deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.110.29.156:8080')], contextPath: null, war: '**/*.war'
+            post {
+                success {
+                    echo 'Archiving the artifacts'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                    emailext body: 'Congragulation your build sucess', subject: 'Success', to: 'satishpanda430@gmail.com'
+                }
+          failure {
+                    emailext body: 'Congragulation your build failure', subject: 'Failure', to: 'satishpanda430@gmail.com'
+                }
+            }
+            }
+              stage('Deployment'){
+            steps {
+                echo 'Sucessfully Deploy'
+            }
         }
-             }
-                  stage ('deploy 2'){
-        step {
-            echo "Deploying tomcat server"
-        }
-         }
-    }
-         }
-    }
+        
+    
+            }
 }
