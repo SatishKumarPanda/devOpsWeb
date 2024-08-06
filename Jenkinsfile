@@ -17,7 +17,7 @@ stages{
                 success {
                     echo 'Archiving the artifacts'
                     archiveArtifacts artifacts: '**/target/*.war'
-                    emailext body: 'Congragulation your build sucess', subject: 'Success', to: 'satishkumarpanda99@gmail.com'
+                    emailext attachLog: true, body: 'Congragulation your build success', subject: 'Success', to: 'satishkumarpanda99@gmail.com'
                 }
           failure {
                     emailext body: 'Congragulation your build failure', subject: 'Failure', to: 'satishkumarpanda99@gmail.com'
