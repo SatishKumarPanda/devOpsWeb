@@ -4,9 +4,6 @@ pipeline {
     tools {
         maven 'local maven'
     }
-    triggers {
-         pollSCM('* * * * *')
-     }
     envitonment {
         AWS_ACCESS_KEY_ID    = credentials('jenkins-aws-secret-key-id')
         AWS-SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
@@ -15,8 +12,18 @@ pipeline {
 stages{
         stage('Build'){
             steps {
-                sh 'mvn clean package'
+                echo 'build'
             }
+        }
+            stage('Test'){
+                step{ 
+                    echo 'test'
+            }
+            }
+                stage('punlish'){
+                    step {
+                        sh 'mvn clean package'
+                    }
             post {
                 success {
                     sh 'aws configure set region ap-south-1'
