@@ -27,7 +27,7 @@ stages{
             post {
                 success {
                     sh 'aws configure set region ap-south-1'
-                    sh 'aws s3 cp .*/target/*.war s3://jenkinsstorebucket1
+                    sh 'aws s3 cp .*/target/*.war s3:jenkinsstorebucket1
                 }
             }
             }
