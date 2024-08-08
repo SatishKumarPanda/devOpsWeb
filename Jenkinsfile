@@ -7,28 +7,25 @@ pipeline {
     triggers {
          pollSCM('* * * * *')
      }
+    envitonment {
+        AWS_ACCESS_KEY_ID    = credentials('jenkins-aws-secret-key-id')
+        AWS-SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
 
 stages{
         stage('Build'){
             steps {
-                sh 'm clean package'
+                sh 'mvn clean package'
             }
             post {
                 success {
                     echo 'Archiving the artifacts'
                     archiveArtifacts artifacts: '**/target/*.war'
-                    emailext attachLog: true, body: 'Congragulation your build success', subject: 'Success', to: 'satishkumarpanda99@gmail.com'
-                }
-          failure {
-                   emailext attachLog: true, body: 'Congragulation your build failure', subject: 'Failure', to: 'satishkumarpanda99@gmail.com'
+                    sh 'aws configure set region ap-south-1'
+                    sh 'aws s3 cp **/target/*.war s3://jenkinsstorebucket1
                 }
             }
             }
-              stage('Deployment'){
-            steps {
-                echo 'Sucessfully Deploy'
-            }
-        }
         
     
             }
