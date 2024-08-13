@@ -2,34 +2,47 @@ pipeline {
     agent any
     
     tools {
-        maven 'local maven'
+        jdk 'java8'
+        maven 'localMaven'
     }
-    triggers {
-         pollSCM('* * * * *')
-     }
-
-stages{
-        stage('Build'){
-            steps {
-                sh 'm clean package'
-            }
-            post {
-                success {
-                    echo 'Archiving the artifacts'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                    emailext attachLog: true, body: 'Congragulation your build success', subject: 'Success', to: 'satishkumarpanda99@gmail.com'
+    parameters {
+         choice(name: 'environ', choices: ['Dev', 'pre-prod', 'prod'], description: 'Environment List')
+         string(name: 'username', defaultValue: 'ranjitkumar', description: 'USer name')
+        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+    }
+    environment {
+        fname = "Ranjit"
+        lname = "Swain"
+        version = "1.2"
+        system = "Dev"
+    }
+    
+    stages{
+            stage('Build Java Application'){
+                steps {
+                    echo "My name is ${fname}"
+                    echo "Executed from ${params.environ}"
+                    echo "Executed by ${params.username} and password provided as ${params.PASSWORD}"
                 }
-          failure {
-                   emailext attachLog: true, body: 'Congragulation your build failure', subject: 'Failure', to: 'satishkumarpanda99@gmail.com'
+                post {
+                    success {
+                        echo 'Post section triggered'
+                    }
                 }
             }
-            }
-              stage('Deployment'){
-            steps {
-                echo 'Sucessfully Deploy'
+        stage('Deploy'){
+            steps{
+                echo "Deployment Triggered"
             }
         }
+    }
+    post {
+        success{
+            echo "Pipeline completed successfully"
+        }
+    }
+}
         
     
-            }
-}
+            
+
