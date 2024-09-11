@@ -4,13 +4,6 @@ pipeline {
     tools {
         maven 'maven'
     }
-	stages{
-        stage('Git checkout'){
-            steps {
-               git branch: 'Docker', url: 'https://github.com/SatishKumarPanda/devOpsWeb.git'
-            }
-	}
-	}
 
 stages{
         stage('Build'){
