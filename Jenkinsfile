@@ -32,6 +32,11 @@ stages{
 	echo 'Login Completed'                
       }           
     }
-
+ stage('Push Image to Docker Hub') {         
+      steps{                            
+	sh 'docker push jyotiranswain/powercloud:$BUILD_NUMBER'                 
+  echo 'Push Image Completed'       
+      }           
+    }
     }
 }
