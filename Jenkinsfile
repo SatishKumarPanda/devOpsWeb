@@ -38,5 +38,18 @@ stages{
   echo 'Push Image Completed'       
       }           
     }
+	 stage('Run Container on Dev Server') {         
+    steps{
+	       script {
+      def dockerdel = "docker rm -f myweb"
+      def dockerRun = "docker run -p 8282:8080 -d --name myweb satishkumarpanda/devopsweb:$BUILD_NUMBER"
+  
+	    sshagent(['docker']) {
+       sh "ssh -o StrictHostKeyChecking=no ec2-user@3.110.134.52 ${dockerdel}"
+       sh "ssh -o StrictHostKeyChecking=no ec2-user@3.110.134.52 ${dockerRun}"
+}
+	       }
+    }       
+    } 
     }
 }
