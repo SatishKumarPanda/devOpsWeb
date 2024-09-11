@@ -34,7 +34,7 @@ stages{
     }
  stage('Push Image to Docker Hub') {         
       steps{                            
-	sh 'docker pushj satishkumarpanda/devopsweb:$BUILD_NUMBER'                 
+	sh 'docker push satishkumarpanda/devopsweb:$BUILD_NUMBER'                 
   echo 'Push Image Completed'       
       }           
     }
