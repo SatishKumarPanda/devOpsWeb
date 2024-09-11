@@ -4,6 +4,9 @@ pipeline {
     tools {
         maven 'maven'
     }
+	 environment {     
+         DOCKERHUB_CREDENTIALS= credentials('docker-hub')     
+       } 
 
 stages{
         stage('Build'){
@@ -22,7 +25,13 @@ stages{
 	sh 'docker build -t satishkumarpanda/devopsweb:$BUILD_NUMBER .'           
         echo 'Build Image Completed'                
       }           
-    }      
+    }   
+   stage('Login to Docker Hub') {         
+      steps{                            
+	sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
+	echo 'Login Completed'                
+      }           
+    }
 
     }
 }
