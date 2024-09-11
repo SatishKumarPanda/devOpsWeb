@@ -41,7 +41,6 @@ stages{
 	 stage('Run Container on Dev Server') {         
     steps{
 	       script {
-      def dockerdel = "docker rm -f myweb"
       def dockerRun = "docker run -p 8282:8080 -d --name myweb satishkumarpanda/devopsweb:$BUILD_NUMBER"
   
 	    sshagent(['docker']) {
