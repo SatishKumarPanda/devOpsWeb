@@ -4,9 +4,13 @@ pipeline {
     tools {
         maven 'maven'
     }
-     environment {     
-         DOCKERHUB_CREDENTIALS= credentials('docker-hub')     
-       } 
+	stages{
+        stage('Git checkout'){
+            steps {
+               git branch: 'Docker', url: 'https://github.com/SatishKumarPanda/devOpsWeb.git'
+            }
+	}
+	}
 
 stages{
         stage('Build'){
