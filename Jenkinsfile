@@ -43,9 +43,9 @@ stages{
 	       script {
       def dockerRun = "docker run -p 8282:8080 -d --name myweb satishkumarpanda/devopsweb:$BUILD_NUMBER"
   
-	    sshagent(['docker']) {
+	    sshagent(['webserver']){
       //sh "ssh -o StrictHostKeyChecking=no ec2-user@3.110.134.52 ${dockerdel}"
-       sh "ssh -o StrictHostKeyChecking=no ec2-user@3.110.134.52 ${dockerRun}"
+       sh "ssh -o StrictHostKeyChecking=no ec2-user@65.0.89.79 ${dockerRun}"
 }
 	       }
     }       
