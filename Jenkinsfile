@@ -1,22 +1,29 @@
-pipeline {
+
+  pipeline {
     agent { label 'Test' }
     
     tools {
-        maven 'maven3' 
-        jdk 'jdk17'// Ensure this tool is correctly configured in Jenkins
+        maven 'maven3'
+        jdk 'jdk17'
+        // Ensure this tool is configured
     }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                sh 'mvn clean'
             }
         }
         stage('Test') {
-            steps {  // Use 'steps' instead of 'step'
-                echo 'Running tests...'
+            steps {
+               sh 'mvn tests'
             }
         }
-        stage('Publish') {  // Fixed the spelling from 'punlish' to 'Publish'
-            steps {  // Use 'steps' for consistency
-       
+        stage('Publish') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+}
+
