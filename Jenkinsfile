@@ -2,7 +2,8 @@ pipeline {
     agent { label 'Test' }
     
     tools {
-        maven 'local maven'  // Ensure this tool is correctly configured in Jenkins
+        maven 'maven3' 
+        jdk 'jdk17'// Ensure this tool is correctly configured in Jenkins
     }
 
     stages {
